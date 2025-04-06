@@ -1,0 +1,38 @@
+youtube-noblink.user.js
+// ==UserScript==
+// @name         Kill YouTube Create Button Animation
+// @namespace    https://your.stylus-helper.cool
+// @version      1.0
+// @description  No more blinking +Create button on YouTube
+// @author       You
+// @match        https://www.youtube.com/*
+// @grant        none
+// @updateURL    https://raw.githubusercontent.com/glehnmarc/tampermonkey-scripts/main/youtube-noblink.user.js
+// @downloadURL  https://raw.githubusercontent.com/glehnmarc/tampermonkey-scripts/main/youtube-noblink.user.js
+// ==/UserScript==
+(function() {
+    'use strict';
+
+    const removeAnimation = () => {
+        const btn = document.querySelector('ytd-topbar-menu-button-renderer[button-renderer*="create"]');
+        if (btn) {
+            btn.style.animation = 'none';
+            btn.style.transition = 'none';
+            btn.querySelectorAll('*').forEach(el => {
+                el.style.animation = 'none';
+                el.style.transition = 'none';
+                el.style.opacity = '1';
+            });
+        }
+    };
+
+    // Initial kill
+    removeAnimation();
+
+    // Watch for DOM changes
+    const observer = new MutationObserver(removeAnimation);
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+})();
